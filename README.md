@@ -1,2 +1,5 @@
 # HYMS
 5)이종 단일 디지털 트윈 간 시간과 공간의 연속성 제공 시뮬레이션 기술 개발
+
+### Recommended system
+* Windows 10 이상, Visual Studio 2019 (V142)
