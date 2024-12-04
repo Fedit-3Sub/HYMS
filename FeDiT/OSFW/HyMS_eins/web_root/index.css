@@ -1,0 +1,63 @@
+  
+  .filebox label {
+    display: inline-block;
+    padding: .2em .25em;
+    color: rgb(0, 0, 0);
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    border: 1px solid #696969;
+    border-bottom-color: #696969;
+    border-radius: .25em;
+  }
+  
+  .filebox input[type="file"] {  /* 파일 필드 숨기기 */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip:rect(0,0,0,0);
+    border: 0;
+  }
+
+  .contextmenu {
+    display: none;
+    position: absolute;
+    width: 200px;
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    border-radius: 5px;
+    list-style: none;
+    box-shadow:
+      0 15px 35px rgba(50,50,90,0.1),
+      0 5px 15px rgba(0,0,0,0.07);
+    overflow: hidden;
+    z-index: 999999;
+  }
+  
+  .contextmenu li {
+    border-left: 3px solid transparent;
+    transition: ease .2s;
+  }
+  
+  .contextmenu li a {
+    display: block;
+    padding: 5px;
+    color: #B0BEC5;
+    text-decoration: none;
+    transition: ease .2s;
+  }
+  
+  .contextmenu li:hover {
+    background: #CE93D8;
+    border-left: 3px solid #9C27B0;
+  }
+  
+  .contextmenu li:hover a {
+    color: #FFFFFF;
+  }

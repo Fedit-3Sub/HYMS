@@ -1,0 +1,164 @@
+{
+	"model_name": "ef_cpd",
+	"id": "laj80z0hxl9npsiqv",
+	"models": [
+		{
+			"model_name": "generator",
+			"id": "laj80z0ho64kqeoh8",
+			"idx": -1,
+			"model_type": 1,
+			"file_name": "generator_atomic.py",
+			"position": {
+				"x": 455,
+				"y": 292
+			},
+			"color": "hsla(311.3801162492038, 100%, 50%, 1)",
+			"in_port": [
+				{
+					"id": "laj80z0h8aqc17f4n",
+					"index": 0,
+					"name": "GEN_STOP",
+					"line": [
+						{
+							"from_obj": {
+								"model_id": "laj80z0hd7p96hsoq",
+								"port_id": "laj80z0h77lch3au8"
+							},
+							"to_obj": {
+								"model_id": "laj80z0ho64kqeoh8",
+								"port_id": "laj80z0h8aqc17f4n"
+							},
+							"user_offset": [
+								0,
+								0,
+								0,
+								0
+							]
+						}
+					]
+				}
+			],
+			"out_port": [
+				{
+					"id": "laj80z0hbm3kf22n0",
+					"index": 0,
+					"name": "GEN_SEND"
+				}
+			]
+		},
+		{
+			"model_name": "transducer",
+			"id": "laj80z0hd7p96hsoq",
+			"idx": 1,
+			"model_type": 1,
+			"file_name": "transducer.py",
+			"position": {
+				"x": 158,
+				"y": 124
+			},
+			"color": "hsla(193.62502251717058, 100%, 50%, 1)",
+			"in_port": [
+				{
+					"id": "laj80z0htd32sbwxq",
+					"index": 0,
+					"name": "TRAN_IN",
+					"line": [
+						{
+							"from_obj": {
+								"model_id": "laj80z0hxl9npsiqv",
+								"port_id": "laj80z0hz3mxr2x97"
+							},
+							"to_obj": {
+								"model_id": "laj80z0hd7p96hsoq",
+								"port_id": "laj80z0htd32sbwxq"
+							},
+							"user_offset": [
+								0,
+								0,
+								0,
+								0
+							]
+						}
+					]
+				}
+			],
+			"out_port": [
+				{
+					"id": "laj80z0h77lch3au8",
+					"index": 0,
+					"name": "TRAN_STOP"
+				}
+			]
+		}
+	],
+	"in_port": [
+		{
+			"id": "laj80z0hz3mxr2x97",
+			"index": 0,
+			"name": "in"
+		}
+	],
+	"out_port": [
+		{
+			"id": "laj80z0h85mzt0vx2",
+			"index": 0,
+			"name": "out",
+			"line": [
+				{
+					"from_obj": {
+						"model_id": "laj80z0ho64kqeoh8",
+						"port_id": "laj80z0hbm3kf22n0"
+					},
+					"to_obj": {
+						"model_id": "laj80z0hxl9npsiqv",
+						"port_id": "laj80z0h85mzt0vx2"
+					},
+					"user_offset": [
+						0,
+						0,
+						0,
+						0
+					]
+				}
+			]
+		}
+	],
+	"couples": [
+		{
+			"src_model_id": "laj80z0hxl9npsiqv",
+			"src_port_id": "laj80z0hz3mxr2x97",
+			"dest_model_id": "laj80z0hd7p96hsoq",
+			"dest_port_id": "laj80z0htd32sbwxq",
+			"user_offset": [
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"src_model_id": "laj80z0ho64kqeoh8",
+			"src_port_id": "laj80z0hbm3kf22n0",
+			"dest_model_id": "laj80z0hxl9npsiqv",
+			"dest_port_id": "laj80z0h85mzt0vx2",
+			"user_offset": [
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"src_model_id": "laj80z0hd7p96hsoq",
+			"src_port_id": "laj80z0h77lch3au8",
+			"dest_model_id": "laj80z0ho64kqeoh8",
+			"dest_port_id": "laj80z0h8aqc17f4n",
+			"user_offset": [
+				0,
+				0,
+				0,
+				0
+			]
+		}
+	]
+}
