@@ -3,3 +3,7 @@
 
 ### Recommended system
 * Windows 10 이상, Visual Studio 2019 (V142)
+
+### install 
+* Python 3.10.8 이상
+* docker-compose up -d
