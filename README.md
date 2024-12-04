@@ -7,3 +7,12 @@
 ### install 
 * Python 3.10.8 이상
 * docker-compose up -d
+
+### CreateAtomdll_Samples 
+* 저작 도구에서 사용하는 원자 모델 개발 프로젝트.
+
+### atomic_model_manager 
+* 저작 도구에서 사용하는 원자 모델 개발 프로젝트.
+
+* ### fDTSimServer 
+* 저작 도구에서 사용하는 원자 모델 개발 프로젝트.
