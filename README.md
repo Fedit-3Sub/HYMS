@@ -28,3 +28,7 @@
       fDTSimServer.exe  
       atomic_model_manager.exe  
   * 모델 조합기를 매뉴얼에 따라 이용
+
+# Funding
+This work was supported by Institute of Information & communications Technology Planning & Evaluation (IITP) grant funded
+by the Korea government (MSIT) (No.2022-0-00431, Development of open service platform and creation technology of federated intelligent digital twin, 100%).
