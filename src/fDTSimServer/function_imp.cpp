@@ -42,24 +42,26 @@ bool function_imp::is_loaded()
 	return true;
 }
 
-int function_imp::call_init(Json::Value msg)
+int function_imp::call_init(const string& project_name, Json::Value msg)
 {
 	if (!_init_param.isNull()) {
 		std::cout << Json::stringifyJson(_init_param) << endl;
+
 		spdlog::info("{}{}SendParam : {}{}", this->_model_name, spdlog::ctl::green, Json::stringifyJson(_init_param), spdlog::ctl::reset);
-		MODEL_SOCKET.send_json(this->_conn_hdl, PROTOCOL::PORT::IN_PARAM.c_str(), _init_param, 1);
+		MODEL_SOCKET.send_json(project_name, this->_conn_hdl, PROTOCOL::PORT::IN_PARAM.c_str(), _init_param, 1);
 	}
-	return MODEL_SOCKET.send_json(this->_conn_hdl, PROTOCOL::MODEL_INIT::TYPE.c_str(), msg, 1, true);
+
+	return MODEL_SOCKET.send_json(project_name, this->_conn_hdl, PROTOCOL::MODEL_INIT::TYPE.c_str(), msg, 1, true);
 }
 
-int function_imp::call_int_trans_fn(Json::Value msg)
+int function_imp::call_int_trans_fn(const string& project_name, Json::Value msg)
 {
-	return MODEL_SOCKET.send_json(this->_conn_hdl, PROTOCOL::TIME_ADVANCE::TYPE.c_str(), msg, 1, true);
+	return MODEL_SOCKET.send_json(project_name, this->_conn_hdl, PROTOCOL::TIME_ADVANCE::TYPE.c_str(), msg, 1, true);
 }
 
-int function_imp::call_ext_trans_fn(Json::Value msg)
+int function_imp::call_ext_trans_fn(const string& project_name, Json::Value msg)
 {
-	return MODEL_SOCKET.send_json(this->_conn_hdl, PROTOCOL::EXT_TRANS::TYPE.c_str(), msg, 1, true);
+	return MODEL_SOCKET.send_json(project_name, this->_conn_hdl, PROTOCOL::EXT_TRANS::TYPE.c_str(), msg, 1, true);
 }
 
 int function_imp::release()

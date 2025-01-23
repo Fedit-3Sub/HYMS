@@ -33,12 +33,10 @@ sim_engine::sim_engine(const string& project_name)
 	this->_sim_end_time = 0.0;
 	this->_project_name = project_name;
 	this->_engine_state = ENGINE_STATE_STOP;
-	this->_event_sync = CreateEvent(NULL, TRUE, FALSE, "client_sync");
-	this->_event_engine_stop = CreateEvent(NULL, TRUE, FALSE, "engine_state");
+	this->_event_sync = CreateEvent(NULL, TRUE, FALSE, (project_name + "_client_sync").c_str());
+	this->_event_engine_stop = CreateEvent(NULL, TRUE, FALSE, (project_name + "_engine_state").c_str());
 	_req_load_models = 0;
 	_loaded_models = 0;
-
-
 }
 
 sim_engine::~sim_engine()
@@ -92,9 +90,11 @@ int sim_engine::stop()
 		_engine_state = ENGINE_STATE_STOP;
 
 	if (_engine_state != ENGINE_STATE_STOP) {
-		DWORD eng_state = WaitForSingleObject(this->_event_engine_stop, 100000);
+		DWORD eng_state = WaitForSingleObject(this->_event_engine_stop, 10000);
+
 		if (WAIT_TIMEOUT == eng_state) {//강제로 ...
 
+			spdlog::info("# sim_engine::set");
 		}
 	}
 	return 1;
@@ -423,6 +423,7 @@ void sim_engine::tar(const Json::Value& msg)
 
 		//spdlog::debug("# sim_engine::tar::" << model_name,iid,ta,__LINE__);
 
+
 		_model_ta[iid] = ta;
 		}, msg);
 	spdlog::debug("{}# sim_engine::tar::{}>={}{}",
@@ -450,7 +451,7 @@ int sim_engine::engine_run()
 	try {
 		_event_table.clear();
 		_recv_packet_buff.clear();
-		MODEL_SOCKET.clear_send_buff();
+		MODEL_SOCKET.clear_send_buff(_project_name);
 		ResetEvent(this->_event_sync);
 		_ack_count = 0;
 		for (auto& model : _models) {
@@ -468,7 +469,7 @@ int sim_engine::engine_run()
 							//최초 모든 모델들 TA값 가져오기
 				Json::Value msg;
 				msg[PROTOCOL::MODEL_INIT::SIM_TIME] = _sim_time;
-				if (model.second->call_init(msg) == 1) {
+				if (model.second->call_init(_project_name, msg) == 1) {
 					//_mutex.lock();
 					_ack_count++;//응답받아야 할 모델 수
 					//_mutex.unlock();
@@ -494,9 +495,9 @@ int sim_engine::engine_run()
 
 
 		if (_ack_count > 0) {
-			MODEL_SOCKET.flush_send_buff();
+			MODEL_SOCKET.flush_send_buff(_project_name);
 			spdlog::debug("# sim_engine::engine_run::wait_ack::{}", _ack_count);
-			DWORD client_state = WaitForSingleObject(this->_event_sync, 1000000);
+			DWORD client_state = WaitForSingleObject(this->_event_sync, 300000);
 			if (WAIT_TIMEOUT == client_state) {//누군가 응답을 하지 않았다
 				spdlog::error("# sim_engine::engine_run::wait_init_ack::time_out::{}", __LINE__);
 			}
@@ -555,7 +556,7 @@ int sim_engine::engine_run()
 						auto& model = _models[model_ta.first];
 
 						//MODEL_SOCKET.send_json(model._conn_hdl, PROTOCOL::TIME_ADVANCE::TYPE.c_str(), msg);
-						if (model->call_int_trans_fn(msg) > 0) {
+						if (model->call_int_trans_fn(_project_name, msg) > 0) {
 							//_mutex.lock();
 							_ack_count++;//응답받아야 할 모델 수
 							//_mutex.unlock();
@@ -564,10 +565,10 @@ int sim_engine::engine_run()
 					
 
 					if (_ack_count > 0) {
-						MODEL_SOCKET.flush_send_buff();
+						MODEL_SOCKET.flush_send_buff(_project_name);
 						spdlog::debug("# sim_engine::engine_run::wait_ack::{}", _ack_count);
 
-						DWORD client_state = WaitForSingleObject(this->_event_sync, 1000000);
+						DWORD client_state = WaitForSingleObject(this->_event_sync, 300000);
 						if (WAIT_TIMEOUT == client_state) {//누군가 응답을 하지 않았다
 							spdlog::error("# sim_engine::engine_run::wait_ack::time_out::{}", __LINE__);
 						}
@@ -591,7 +592,7 @@ int sim_engine::engine_run()
 						_sim_time, model_ta.second, model->_model_name);
 
 					//MODEL_SOCKET.send_json(model._conn_hdl, PROTOCOL::TIME_ADVANCE::TYPE.c_str(), msg);
-					if (model->call_int_trans_fn(msg) > 0) {
+					if (model->call_int_trans_fn(_project_name, msg) > 0) {
 						//_mutex.lock();
 						_ack_count++;//응답받아야 할 모델 수
 						//_mutex.unlock();
@@ -599,10 +600,10 @@ int sim_engine::engine_run()
 				}
 		
 				if (_ack_count > 0) {
-					MODEL_SOCKET.flush_send_buff();
+					MODEL_SOCKET.flush_send_buff(_project_name);
 					spdlog::debug("# sim_engine::engine_run::wait_ack::{}", _ack_count);
 
-					DWORD client_state = WaitForSingleObject(this->_event_sync, 1000000);
+					DWORD client_state = WaitForSingleObject(this->_event_sync, 300000);
 					if (WAIT_TIMEOUT == client_state) {//누군가 응답을 하지 않았다
 						spdlog::error("# sim_engine::engine_run::wait_ack::time_out::{}", __LINE__);
 					}
@@ -639,8 +640,8 @@ int sim_engine::engine_run()
 
 
 					if (_ack_count > 0) {
-						MODEL_SOCKET.flush_send_buff();
-						DWORD client_state = WaitForSingleObject(this->_event_sync, 1000000);
+						MODEL_SOCKET.flush_send_buff(_project_name);
+						DWORD client_state = WaitForSingleObject(this->_event_sync, 300000);
 						if (WAIT_TIMEOUT == client_state) {//누군가 응답을 하지 않았다
 							spdlog::error("# WARNING] sim_engine::engine_run::wait_ext::time_out::{}", __LINE__);
 						}
@@ -811,7 +812,7 @@ void sim_engine::send_ext_trans_msg(const string& src_model_id, const string& sr
 					msg[PROTOCOL::EXT_TRANS::PORT::PORT_VAL::NAME] = dest.second;
 					spdlog::debug("# sim_engine::send_ext_trans_msg::to::{}::{}::{}",
 						dest.first, Json::stringifyJson(msg), (int)model->_model_type, __LINE__);
-					if (model->call_ext_trans_fn(msg) == 1) {
+					if (model->call_ext_trans_fn(_project_name, msg) == 1) {
 						//_mutex.lock();
 						_ack_count++;//응답받아야 할 모델 수
 						//_mutex.unlock();
@@ -879,7 +880,7 @@ int sim_engine::update_modelparam(const Json::Value& coupled_model_info)
 					init_param = m[PROTOCOL::COUPLED::PORT::IN_PARAM];
 					auto model = _modelsName.find(model_name);
 					if (model != _modelsName.end()) {
-						model->second->_init_param = init_param;
+						model->second-> _init_param= init_param;
 					}
 				}
 

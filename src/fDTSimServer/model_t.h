@@ -92,9 +92,9 @@ public:
 	virtual bool load(const string& ip_and_port, Json::Value msg);
 	virtual bool is_loaded();
 	virtual int call_send_msg(const string& type, Json::Value msg);
-	virtual int call_init(Json::Value msg);
-	virtual int call_int_trans_fn(Json::Value msg);
-	virtual int call_ext_trans_fn(Json::Value msg);
+	virtual int call_init(const string& project_name, Json::Value msg);
+	virtual int call_int_trans_fn(const string& project_name, Json::Value msg);
+	virtual int call_ext_trans_fn(const string& project_name, Json::Value msg);
 	virtual int release();
 	static model_t* create_model(MODEL_TYPE model_type);
 

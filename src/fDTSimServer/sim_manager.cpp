@@ -209,6 +209,10 @@ int sim_manager::init_gui(int listen_port)
         std::string remote_ip_port = this->_gui_socket.get_client_ip_port(conn);
         spdlog::info("GUI Client IP : {}", remote_ip_port.c_str());
 
+        for (auto& eng : _sim_engines)
+        {
+            eng.second.second->stop();
+        }
         if (g_gui_clients[remote_ip_port].client_id != "") {
             sim_del(g_gui_clients[remote_ip_port].client_id);
         }

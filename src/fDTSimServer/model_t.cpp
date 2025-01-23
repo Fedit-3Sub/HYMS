@@ -36,17 +36,17 @@ int model_t::call_send_msg(const string& type, Json::Value msg)
 	return 0;
 }
 
-int model_t::call_init(Json::Value msg)
+int model_t::call_init(const string& project_name, Json::Value msg)
 {
 	return 0;
 }
 
-int model_t::call_int_trans_fn(Json::Value msg)
+int model_t::call_int_trans_fn(const string& project_name, Json::Value msg)
 {
 	return 0;
 }
 
-int model_t::call_ext_trans_fn(Json::Value msg)
+int model_t::call_ext_trans_fn(const string& project_name, Json::Value msg)
 {
 	return 0;
 }

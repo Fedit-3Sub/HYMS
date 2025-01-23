@@ -15,9 +15,9 @@ public:
 	bool _iscapsule_connected;
 	virtual bool load(const string& ip_and_port, Json::Value msg);
 	virtual bool is_loaded();
-	virtual int call_init(Json::Value msg);
-	virtual int call_int_trans_fn(Json::Value msg);
-	virtual int call_ext_trans_fn(Json::Value msg);
+	virtual int call_init(const string& project_name, Json::Value msg);
+	virtual int call_int_trans_fn(const string& project_name, Json::Value msg);
+	virtual int call_ext_trans_fn(const string& project_name, Json::Value msg);
 	virtual int release();
 private:
 	int connect_model_capsule(const string& ip_and_port);
